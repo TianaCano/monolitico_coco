@@ -7,9 +7,6 @@ use app\models\mappers\RetrospectivesModelMapper;
 use app\models\entities\Sprint;
 use app\models\entities\RetroItem;
 
-/**
- * Implementación del repositorio usando sentencias preparadas de MySQLi.
- */
 class RetrospectivesRepository implements RetrospectivesRepositoryInterface {
     private RetroDbInterface $db;
     private RetrospectivesModelMapper $mapper;

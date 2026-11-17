@@ -1,0 +1,528 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Quicksand", sans-serif;
+}
+
+body {
+  background-color: #faf5ee;
+  color: #2b1b4d;
+  display: flex;
+  min-height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.menu-lateral {
+  width: 240px;
+  background-color: #2b1b4d;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 25px 18px;
+  flex-shrink: 0;
+}
+
+.logo-contenedor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icono {
+  font-size: 26px;
+  background-color: #4b327b;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.logo-texto {
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.logo-texto strong {
+  color: #ffd6f0;
+}
+
+.logo-texto span {
+  color: #ffde70;
+}
+
+.navegacion ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.navegacion a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #d1c5e6;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+}
+
+.navegacion li.activo a,
+.navegacion a:hover {
+  background-color: #d8c7fa;
+  color: #2b1b4d;
+}
+
+.opcion-decorativa a {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.pie-menu {
+  text-align: center;
+  color: #e5dbf8;
+  font-size: 16px;
+  font-style: italic;
+}
+
+.pie-menu .corazon {
+  font-size: 20px;
+  display: block;
+  margin-top: 5px;
+}
+
+.contenido-principal {
+  flex: 1;
+  padding: 25px 35px;
+  overflow-y: auto;
+}
+
+.etiqueta-sesion {
+  text-align: right;
+  font-size: 13px;
+  font-weight: 700;
+  color: #5d3596;
+  margin-bottom: 15px;
+}
+
+.banner-bienvenida {
+  background-color: #f7edfb;
+  border: 2px solid #ecd7f5;
+  border-radius: 20px;
+  padding: 22px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.banner-texto h1 {
+  font-size: 44px;
+  color: #24143e;
+  margin-bottom: 10px;
+}
+
+.banner-texto p {
+  font-size: 20px;
+  color: #553e77;
+  margin-bottom: 12px;
+}
+
+.frase-motivacional {
+  display: inline-block;
+  background-color: #d9c7fa;
+  color: #2b1b4d;
+  padding: 6px 14px;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.barra-acciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+.boton-morado {
+  background-color: #532c94;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.boton-morado:hover {
+  background-color: #3e1e75;
+}
+
+.buscador-decorativo input {
+  padding: 10px 18px;
+  border-radius: 15px;
+  border: 1.5px solid #ded4ea;
+  width: 280px;
+  outline: none;
+  background-color: #ffffff;
+  font-size: 14px;
+}
+
+.tarjetas-kpi {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.tarjeta-kpi {
+  flex: 1;
+  border-radius: 16px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.kpi-morada {
+  background-color: #f1e9fb;
+  border: 1.5px solid #e2d2f7;
+}
+
+.kpi-amarilla {
+  background-color: #fef4dd;
+  border: 1.5px solid #f9e2ab;
+}
+
+.kpi-verde {
+  background-color: #def6ec;
+  border: 1.5px solid #bbf0dc;
+}
+
+.kpi-icono {
+  font-size: 30px;
+}
+
+.kpi-datos h3 {
+  font-size: 22px;
+  color: #24143e;
+}
+
+.kpi-datos p {
+  font-size: 13px;
+  color: #5d487d;
+  font-weight: 600;
+}
+
+.contenedor-sprints {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 20px 25px;
+  border: 1.5px solid #ebdff2;
+}
+
+.cabecera-seccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.cabecera-seccion h2 {
+  font-size: 18px;
+  color: #2b1b4d;
+}
+
+.enlace-ver-todas {
+  color: #532c94;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.mensaje-vacio {
+  text-align: center;
+  padding: 20px;
+  color: #695687;
+}
+
+.tarjeta-sprint {
+  border: 1.5px solid #f0e6f7;
+  border-radius: 14px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.sprint-info-enlace {
+  background-color: #ece4f9;
+  padding: 8px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 200px;
+}
+
+.icono-cohete {
+  font-size: 20px;
+}
+
+.sprint-info-enlace h4 {
+  font-size: 15px;
+  color: #2b1b4d;
+}
+
+.sprint-info-enlace span {
+  font-size: 11px;
+  color: #695687;
+}
+
+.conteo-items {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.punto-logro {
+  color: #10b981;
+}
+.punto-impedimento {
+  color: #ef4444;
+}
+.punto-accion {
+  color: #f59e0b;
+}
+
+.estado-y-botones {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.insignia-estado {
+  padding: 6px 14px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.estado-completadas {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.estado-en-progreso {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+
+.estado-pendientes {
+  background-color: #ede9fe;
+  color: #5b21b6;
+}
+
+.enlace-icono {
+  text-decoration: none;
+  font-size: 16px;
+  padding: 4px;
+}
+
+.alerta-exito {
+  background-color: #dcfce7;
+  color: #15803d;
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.alerta-error {
+  background-color: #fee2e2;
+  color: #991b1b;
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.cabecera-formulario {
+  margin-bottom: 20px;
+}
+
+.enlace-volver {
+  color: #532c94;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.formulario-caja {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
+  border: 1.5px solid #ebdff2;
+  max-width: 550px;
+}
+
+.titulo-formulario {
+  margin-bottom: 12px;
+}
+
+.campo-formulario {
+  margin-bottom: 15px;
+}
+
+.campo-formulario label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.campo-formulario input,
+.campo-formulario select,
+.campo-formulario textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #dcd1e8;
+  outline: none;
+  font-size: 14px;
+}
+
+.subtitulo-detalle {
+  font-size: 13px;
+  color: #64537e;
+}
+
+.seccion-sprint-anterior {
+  margin-bottom: 20px;
+}
+
+.texto-vacio-anterior {
+  font-size: 13px;
+  color: #695687;
+  margin-top: 8px;
+}
+
+.lista-acciones-anteriores {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tarjeta-sprint-compacta {
+  margin: 0;
+  padding: 8px 12px;
+}
+
+.columnas-retro {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.columna-caja {
+  flex: 1;
+  background: #ffffff;
+  border: 1.5px solid #ebdff2;
+  border-radius: 14px;
+  padding: 15px;
+}
+
+.titulo-columna {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.titulo-logros {
+  color: #10b981;
+}
+.titulo-impedimentos {
+  color: #ef4444;
+}
+.titulo-acciones {
+  color: #f59e0b;
+}
+
+.texto-columna-vacia {
+  font-size: 12px;
+  color: #888888;
+}
+
+.item-postit {
+  background-color: #faf7fd;
+  border: 1px solid #ebdcf5;
+  border-left: 4px solid #532c94;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.borde-logro {
+  border-left-color: #10b981;
+}
+.borde-impedimento {
+  border-left-color: #ef4444;
+}
+.borde-accion {
+  border-left-color: #f59e0b;
+}
+
+.pie-postit-eliminar {
+  text-align: right;
+  margin-top: 4px;
+}
+
+.pie-postit-accion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.enlace-eliminar-item {
+  color: #ef4444;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.insignia-compacta {
+  font-size: 11px;
+  padding: 4px 8px;
+}
+
+.banner-imagen-contenedor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imagen-banner-equipo {
+  max-width: 380px;
+  max-height: 260px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}

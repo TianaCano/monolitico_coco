@@ -3,7 +3,7 @@
 namespace app\models\entities;
 
 /**
- * Entidad que representa un ítem de retrospectiva (logro, impedimento o acción).
+ * Items (logro, impedimento o acción).
  */
 class RetroItem {
     private int $id;

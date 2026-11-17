@@ -7,9 +7,6 @@ use app\models\mappers\RetrospectivesModelMapper;
 use app\models\repositories\RetrospectivesRepository;
 use app\models\repositories\RetrospectivesRepositoryInterface;
 
-/**
- * Ensamblador de la capa de modelos: inicializa DB, mappers y repositorio.
- */
 class ModelsConfig {
     public static function get_retrospectives_repository(): RetrospectivesRepositoryInterface {
         $db = new RetroDb();

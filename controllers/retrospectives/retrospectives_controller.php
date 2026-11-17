@@ -7,9 +7,6 @@ use app\controllers\mappers\RetrospectivesControllerMapper;
 use app\models\entities\Sprint;
 use app\models\entities\RetroItem;
 
-/**
- * Controlador principal que maneja las reglas de negocio y validaciones.
- */
 class RetrospectivesController implements RetrospectivesControllerInterface {
     private RetrospectivesRepositoryInterface $repository;
     private RetrospectivesControllerMapper $mapper;

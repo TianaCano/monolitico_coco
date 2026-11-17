@@ -2,9 +2,6 @@
 
 namespace app\models\database;
 
-/**
- * Manejador de la conexión a MySQL usando la extensión mysqli.
- */
 class RetroDb implements RetroDbInterface {
     private string $host = 'localhost';
     private string $user = 'root';

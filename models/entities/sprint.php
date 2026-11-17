@@ -2,9 +2,6 @@
 
 namespace app\models\entities;
 
-/**
- * Entidad que representa un Sprint en el sistema.
- */
 class Sprint {
     private int $id;
     private string $name;

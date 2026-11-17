@@ -4,7 +4,7 @@ require_once __DIR__ . '/../bootstrap.php';
 use app\controllers\config\ControllersConfig;
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header('Location: retrospectivas.php?error=Identificador no proporcionado');
+    header('Location: retrospectivas.php');
     exit;
 }
 
@@ -17,15 +17,15 @@ if ($sprint === null) {
     exit;
 }
 
-$summary = $controller->get_sprint_summary($sprint_id);
-$items = $summary['items'];
-$status = $summary['status'];
+$resumen = $controller->get_sprint_summary($sprint_id);
+$items = $resumen['items'];
+$estado = $resumen['status'];
 
-$previous_sprint = $controller->get_previous_sprint($sprint_id);
-$previous_actions = [];
-if ($previous_sprint !== null) {
-    $prev_items = $controller->get_items_by_sprint($previous_sprint->get_id());
-    $previous_actions = array_filter($prev_items, fn($item) => $item->get_category() === 'accion');
+$sprint_anterior = $controller->get_previous_sprint($sprint_id);
+$acciones_anteriores = [];
+if ($sprint_anterior !== null) {
+    $items_anteriores = $controller->get_items_by_sprint($sprint_anterior->get_id());
+    $acciones_anteriores = array_filter($items_anteriores, fn($i) => $i->get_category() === 'accion');
 }
 ?>
 <!DOCTYPE html>
@@ -33,182 +33,162 @@ if ($previous_sprint !== null) {
 <head>
     <meta charset="UTF-8">
     <title>Detalle: <?php echo htmlspecialchars($sprint->get_name(), ENT_QUOTES, 'UTF-8'); ?></title>
+    <link rel="stylesheet" href="../public/css/estilos.css">
 </head>
 <body>
-    <header>
-        <h1>Retrospectiva: <?php echo htmlspecialchars($sprint->get_name(), ENT_QUOTES, 'UTF-8'); ?></h1>
-        <p>
-            <strong>Fechas:</strong> <?php echo htmlspecialchars($sprint->get_start_date(), ENT_QUOTES, 'UTF-8'); ?> al <?php echo htmlspecialchars($sprint->get_end_date(), ENT_QUOTES, 'UTF-8'); ?> |
-            <strong>Estado:</strong> <?php echo htmlspecialchars($status, ENT_QUOTES, 'UTF-8'); ?>
-        </p>
-        <p><a href="retrospectivas.php">← Volver al listado principal</a></p>
-    </header>
 
-    <main>
-        <?php if (isset($_GET['msg'])): ?>
-            <p><strong>Mensaje:</strong> <?php echo htmlspecialchars($_GET['msg'], ENT_QUOTES, 'UTF-8'); ?></p>
+    <?php require_once __DIR__ . '/partials/menu.php'; ?>
+
+    <main class="contenido-principal">
+        <div class="cabecera-seccion">
+            <div>
+                <h2>🚀 <?php echo htmlspecialchars($sprint->get_name(), ENT_QUOTES, 'UTF-8'); ?></h2>
+                <p class="subtitulo-detalle">
+                    Fechas: <?php echo htmlspecialchars($sprint->get_start_date(), ENT_QUOTES, 'UTF-8'); ?> al <?php echo htmlspecialchars($sprint->get_end_date(), ENT_QUOTES, 'UTF-8'); ?> |
+                    Estado: <strong><?php echo htmlspecialchars($estado, ENT_QUOTES, 'UTF-8'); ?></strong>
+                </p>
+            </div>
+            <a href="retrospectivas.php" class="enlace-volver">← Volver al listado</a>
+        </div>
+
+         <?php if (isset($_GET['msg'])): ?>
+            <div class="alerta-exito">✓ <?php echo htmlspecialchars($_GET['msg'], ENT_QUOTES, 'UTF-8'); ?></div>
         <?php endif; ?>
+
         <?php if (isset($_GET['error'])): ?>
-            <p><strong>Error:</strong> <?php echo htmlspecialchars($_GET['error'], ENT_QUOTES, 'UTF-8'); ?></p>
+            <div class="alerta-error">⚠ <?php echo htmlspecialchars($_GET['error'], ENT_QUOTES, 'UTF-8'); ?></div>
         <?php endif; ?>
 
-        <!-- Sección de revisión del sprint previo -->
-        <section id="previous-sprint-section">
-            <h2>Acciones del Sprint Anterior</h2>
-            <?php if ($previous_sprint === null): ?>
-                <p>No hay un sprint anterior registrado para comparar compromisos.</p>
-            <?php elseif (empty($previous_actions)): ?>
-                <p>El sprint anterior (<?php echo htmlspecialchars($previous_sprint->get_name(), ENT_QUOTES, 'UTF-8'); ?>) no tuvo compromisos de acción registrados.</p>
-            <?php else: ?>
-                <p>Revisión de compromisos adquiridos en: <strong><?php echo htmlspecialchars($previous_sprint->get_name(), ENT_QUOTES, 'UTF-8'); ?></strong></p>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Acción Prometida</th>
-                            <th>¿Se Cumplió?</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($previous_actions as $action): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($action->get_description(), ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo $action->get_done() ? 'Sí, cumplida' : 'No cumplida'; ?></td>
-                                <td>
-                                    <?php if ($action->get_done()): ?>
-                                        <a href="actions/marcar_cumplimiento.php?id=<?php echo $action->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>&done=0">Marcar como No Cumplida</a>
+        <!-- Retrospectiva anterior -->
+        <?php if ($sprint_anterior !== null): ?>
+            <div class="contenedor-sprints seccion-sprint-anterior">
+                <h3>🔍 Compromisos del Sprint Anterior (<?php echo htmlspecialchars($sprint_anterior->get_name(), ENT_QUOTES, 'UTF-8'); ?>)</h3>
+                <?php if (empty($acciones_anteriores)): ?>
+                    <p class="texto-vacio-anterior">No hubo compromisos registrados en el sprint anterior.</p>
+                <?php else: ?>
+                    <div class="lista-acciones-anteriores">
+                        <?php foreach ($acciones_anteriores as $act): ?>
+                            <div class="tarjeta-sprint tarjeta-sprint-compacta">
+                                <span><?php echo htmlspecialchars($act->get_description(), ENT_QUOTES, 'UTF-8'); ?></span>
+                                <div>
+                                    <?php if ($act->get_done()): ?>
+                                        <a href="actions/marcar_cumplimiento.php?id=<?php echo $act->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>&done=0" 
+                                           class="insignia-estado estado-completadas">
+                                           ✓ Cumplida (clic para desmarcar)
+                                        </a>
                                     <?php else: ?>
-                                        <a href="actions/marcar_cumplimiento.php?id=<?php echo $action->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>&done=1">Marcar como Cumplida</a>
+                                        <a href="actions/marcar_cumplimiento.php?id=<?php echo $act->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>&done=1" 
+                                           class="insignia-estado estado-pendientes">
+                                           ○ Pendiente (clic para cumplir)
+                                        </a>
                                     <?php endif; ?>
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php endif; ?>
-        </section>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
 
-        <hr>
-
-        <!-- Sección de Ítems del Sprint Actual -->
-        <section id="current-items-section">
-            <h2>Resultados de este Sprint</h2>
-
-            <!-- 1. Logros -->
-            <div id="logros-block">
-                <h3>Logros (Lo que salió bien)</h3>
-                <ul>
-                    <?php 
-                        $logros = array_filter($items, fn($i) => $i->get_category() === 'logro');
-                        if (empty($logros)):
-                    ?>
-                        <li>No se registraron logros.</li>
-                    <?php else: ?>
-                        <?php foreach ($logros as $item): ?>
-                            <li>
-                                <?php echo htmlspecialchars($item->get_description(), ENT_QUOTES, 'UTF-8'); ?>
-                                [<a href="actions/eliminar_item.php?id=<?php echo $item->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>" onclick="return confirm('¿Eliminar este ítem?');">Eliminar</a>]
-                            </li>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </ul>
+        <div class="columnas-retro">
+            <!--Logros -->
+            <div class="columna-caja">
+                <h3 class="titulo-columna titulo-logros">● Logros (Lo bueno)</h3>
+                <?php 
+                    $logros = array_filter($items, fn($i) => $i->get_category() === 'logro');
+                    if (empty($logros)):
+                ?>
+                    <p class="texto-columna-vacia">No hay logros registrados.</p>
+                <?php else: ?>
+                    <?php foreach ($logros as $i): ?>
+                        <div class="item-postit borde-logro">
+                            <p><?php echo htmlspecialchars($i->get_description(), ENT_QUOTES, 'UTF-8'); ?></p>
+                            <div class="pie-postit-eliminar">
+                                <a href="actions/eliminar_item.php?id=<?php echo $i->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>" 
+                                   onclick="return confirm('¿Eliminar ítem?');" 
+                                   class="enlace-eliminar-item">Eliminar</a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
 
-            <!-- 2. Impedimentos -->
-            <div id="impedimentos-block">
-                <h3>Impedimentos (Lo que salió mal o causó demoras)</h3>
-                <ul>
-                    <?php 
-                        $impedimentos = array_filter($items, fn($i) => $i->get_category() === 'impedimento');
-                        if (empty($impedimentos)):
-                    ?>
-                        <li>No se registraron impedimentos.</li>
-                    <?php else: ?>
-                        <?php foreach ($impedimentos as $item): ?>
-                            <li>
-                                <?php echo htmlspecialchars($item->get_description(), ENT_QUOTES, 'UTF-8'); ?>
-                                [<a href="actions/eliminar_item.php?id=<?php echo $item->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>" onclick="return confirm('¿Eliminar este ítem?');">Eliminar</a>]
-                            </li>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </ul>
+            <!--Impedimentos -->
+            <div class="columna-caja">
+                <h3 class="titulo-columna titulo-impedimentos">● Impedimentos (Obstáculos)</h3>
+                <?php 
+                    $impedimentos = array_filter($items, fn($i) => $i->get_category() === 'impedimento');
+                    if (empty($impedimentos)):
+                ?>
+                    <p class="texto-columna-vacia">No hay impedimentos.</p>
+                <?php else: ?>
+                    <?php foreach ($impedimentos as $i): ?>
+                        <div class="item-postit borde-impedimento">
+                            <p><?php echo htmlspecialchars($i->get_description(), ENT_QUOTES, 'UTF-8'); ?></p>
+                            <div class="pie-postit-eliminar">
+                                <a href="actions/eliminar_item.php?id=<?php echo $i->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>" 
+                                   onclick="return confirm('¿Eliminar ítem?');" 
+                                   class="enlace-eliminar-item">Eliminar</a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
 
-            <!-- 3. Acciones de mejora -->
-            <div id="acciones-block">
-                <h3>Acciones (Compromisos para el siguiente sprint)</h3>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Descripción</th>
-                            <th>Fecha Límite/Revisión</th>
-                            <th>Cumplida</th>
-                            <th>Cambiar Estado</th>
-                            <th>Opciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                            $acciones = array_filter($items, fn($i) => $i->get_category() === 'accion');
-                            if (empty($acciones)):
-                        ?>
-                            <tr><td colspan="5">No hay acciones registradas para este sprint.</td></tr>
-                        <?php else: ?>
-                            <?php foreach ($acciones as $item): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($item->get_description(), ENT_QUOTES, 'UTF-8'); ?></td>
-                                    <td><?php echo $item->get_review_date() ? htmlspecialchars($item->get_review_date(), ENT_QUOTES, 'UTF-8') : 'No asignada'; ?></td>
-                                    <td><strong><?php echo $item->get_done() ? 'Cumplida' : 'Pendiente'; ?></strong></td>
-                                    <td>
-                                        <?php if ($item->get_done()): ?>
-                                            <a href="actions/marcar_cumplimiento.php?id=<?php echo $item->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>&done=0">Marcar como Pendiente</a>
-                                        <?php else: ?>
-                                            <a href="actions/marcar_cumplimiento.php?id=<?php echo $item->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>&done=1">Marcar como Cumplida</a>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <a href="actions/eliminar_item.php?id=<?php echo $item->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>" onclick="return confirm('¿Eliminar esta acción?');">Eliminar</a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+            <!--Acciones -->
+            <div class="columna-caja">
+                <h3 class="titulo-columna titulo-acciones">● Acciones (Compromisos)</h3>
+                <?php 
+                    $acciones = array_filter($items, fn($i) => $i->get_category() === 'accion');
+                    if (empty($acciones)):
+                ?>
+                    <p class="texto-columna-vacia">No hay acciones registradas.</p>
+                <?php else: ?>
+                    <?php foreach ($acciones as $i): ?>
+                        <div class="item-postit borde-accion">
+                            <p><?php echo htmlspecialchars($i->get_description(), ENT_QUOTES, 'UTF-8'); ?></p>
+                            <div class="pie-postit-accion">
+                                <?php if ($i->get_done()): ?>
+                                    <a href="actions/marcar_cumplimiento.php?id=<?php echo $i->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>&done=0" 
+                                       class="insignia-estado estado-completadas insignia-compacta">✓ Cumplida</a>
+                                <?php else: ?>
+                                    <a href="actions/marcar_cumplimiento.php?id=<?php echo $i->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>&done=1" 
+                                       class="insignia-estado estado-pendientes insignia-compacta">○ Pendiente</a>
+                                <?php endif; ?>
+                                <a href="actions/eliminar_item.php?id=<?php echo $i->get_id(); ?>&sprint_id=<?php echo $sprint_id; ?>" 
+                                   onclick="return confirm('¿Eliminar acción?');" 
+                                   class="enlace-eliminar-item">Eliminar</a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
-        </section>
+        </div>
 
-        <hr>
-
-        <!-- Formulario para agregar ítem -->
-        <section id="add-item-section">
-            <h3>Agregar Ítem a la Retrospectiva</h3>
+        <!-- Formulario para agregaar-->
+        <div class="formulario-caja">
+            <h3 class="titulo-formulario">+ Agregar Ítem al Sprint</h3>
             <form action="actions/registrar_item.php" method="POST">
                 <input type="hidden" name="sprint_id" value="<?php echo $sprint_id; ?>">
 
-                <div>
-                    <label for="category">Categoría:</label><br>
+                <div class="campo-formulario">
+                    <label for="category">Categoría:</label>
                     <select name="category" id="category" required>
-                        <option value="logro">Logro</option>
-                        <option value="impedimento">Impedimento</option>
-                        <option value="accion">Acción (Compromiso)</option>
+                        <option value="logro">Logro (Lo que funcionó)</option>
+                        <option value="impedimento">Impedimento (Qué mejorar)</option>
+                        <option value="accion">Acción (Compromiso a futuro)</option>
                     </select>
                 </div>
-                <br>
-                <div>
-                    <label for="description">Descripción:</label><br>
-                    <textarea name="description" id="description" rows="3" cols="40" required placeholder="Escribe lo ocurrido o la acción a tomar..."></textarea>
+
+                <div class="campo-formulario">
+                    <label for="description">Descripción:</label>
+                    <textarea name="description" id="description" rows="2" required placeholder="Escribe el comentario..."></textarea>
                 </div>
-                <br>
-                <div>
-                    <label for="review_date">Fecha de Revisión (opcional, solo para acciones):</label><br>
-                    <input type="date" name="review_date" id="review_date">
-                </div>
-                <br>
-                <div>
-                    <button type="submit">Agregar Ítem</button>
-                </div>
+
+                <button type="submit" class="boton-morado">Guardar Ítem</button>
             </form>
-        </section>
+        </div>
     </main>
+
 </body>
 </html>

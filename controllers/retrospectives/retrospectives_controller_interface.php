@@ -4,9 +4,6 @@ namespace app\controllers\retrospectives;
 
 use app\models\entities\Sprint;
 
-/**
- * Interfaz de la lógica de negocio expuesta por el controlador de retrospectivas.
- */
 interface RetrospectivesControllerInterface {
     public function get_sprints(): array;
     public function get_sprint(int $id): ?Sprint;

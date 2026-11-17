@@ -5,9 +5,6 @@ namespace app\models\repositories;
 use app\models\entities\Sprint;
 use app\models\entities\RetroItem;
 
-/**
- * Contrato que define las operaciones de persistencia para sprints e ítems.
- */
 interface RetrospectivesRepositoryInterface {
     public function get_sprints(): array;
     public function get_sprint(int $id): ?Sprint;
